@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Footer } from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import { useProductMutate } from "../../hooks/useProductDataMutate";
 import { ProductDataDto } from "../../interface/ProductDataDto";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Categoria } from "../../interface/Categoria";
 
 
 const Input = ({id, name, label, inputValue, maxlength, type, placeholder, updateValue} : any) => {
@@ -17,12 +18,14 @@ const Input = ({id, name, label, inputValue, maxlength, type, placeholder, updat
 
 export function CadastrarProduto(){
 
+    const navigate = useNavigate();
+
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
     const [custo, setCusto] = useState(undefined);
     const [valor, setValor] = useState(undefined);
     const [estoque, setEstoque] = useState(undefined);
-    const [categoria, setCategoria] = useState(undefined);
+    const [categoria, setCategoria] = useState<Categoria>({cod_cat: 1, descricao: "", nome_cat: ""});
     const [imagem, setImagem] = useState("");
     const [peso , setPeso] = useState(undefined);
     const [comprimento , setComprimento] = useState(undefined);
@@ -49,6 +52,25 @@ export function CadastrarProduto(){
             largura_cm: largura
         }
         mutate(productData);
+
+        navigate("/");
+    }
+
+
+    function atualizarEstado(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+        const { name, value } = e.target;
+ 
+        if (name === 'categoria') {
+            setCategoria({
+                ...categoria,
+                    cod_cat: parseInt(value),
+                    nome_cat: "",
+                    descricao: ""
+
+                },
+            );
+        }
+           
     }
 
     return (
@@ -71,8 +93,9 @@ export function CadastrarProduto(){
                 
                 <Input label="Estoque Inicial: " id="estoque" name="estoque" inputValue={estoque} updateValue={setEstoque} type="number" maxlength={10} placeholder="Estoque *"/>
                 
-                <Input label="Categoria: " id="categoria" name="categoria" inputValue={categoria} updateValue={setCategoria} type="number" maxlength={10} placeholder="Categoria *"/>
-                
+                <label htmlFor="categoria">Categoria: </label>
+                <input id={"categoria"} name={"categoria"} value={categoria.cod_cat || ''} type={"number"} required placeholder={"Categoria *"} onChange={atualizarEstado}></input>
+
                 <Input label="Imagem: " id="imagem" name="imagem" inputValue={imagem} updateValue={setImagem} type="text" maxlength={255} placeholder="Imagem *"/>
             
                 <Input label="Peso(kg): " id="peso_kg" name="peso_kg" inputValue={peso} updateValue={setPeso} type="text" maxlength={255} placeholder="Peso *"/>

@@ -1,9 +1,9 @@
 import { useContext, useRef, useState } from 'react'
-import { CartContext } from '../context/cartContext'
-import { Footer } from '../components/footer/footer'
-import Header from '../components/header/header'
+import { CartContext } from '../../context/cartContext'
+import { Footer } from '../../components/footer/footer'
+import Header from '../../components/header/header'
 import { Link } from 'react-router-dom'
-import { UserContext } from '../context/userContext'
+import { UserContext } from '../../context/userContext'
 import { useForm } from 'react-hook-form'
 import { Dialog } from '@mui/material'
 
@@ -24,12 +24,17 @@ export default function Cart () {
   }
 
   const handleCalculoFrete = async (e: any) => {
-    const response = await calculoFrete(e.cep);
-    window.sessionStorage.setItem("cep", e.cep);
-    setOpcoesFrete(response.data.formas);
-    handleMenuFreteOpen();
+    const cep : string = e.cep;
+    if(cep.trim.length == 0){
+      return null; 
+    }else{ 
+      const response = await calculoFrete(e.cep);
+      window.sessionStorage.setItem("cep", e.cep);
+      setOpcoesFrete(response.data.formas);
+      handleMenuFreteOpen();
+      return response;
+    }
 
-    return response;
   }
 
   const setMetodoEntrega = async () =>  {
@@ -43,7 +48,7 @@ export default function Cart () {
   return (
     <>    
     <Header></Header>
-    <section>    
+    <section className='cart'>    
     <div id="resumo">
       <h1><span className="material-symbols-outlined">shopping_cart</span> MEU CARRINHO</h1>
       <h2>Resumo</h2>
@@ -131,9 +136,9 @@ export default function Cart () {
         cartItems.length == 0 ||
 
         user.length == 0 && 
-        <Link to="/loja/login" ><span className='material-symbols-outlined'>shopping_cart</span> FINALIZAR PEDIDO</Link>
+        <Link to="/loja/login" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart FINALIZAR PEDIDO</span></Link>
         ||
-        <Link to="/loja/cart/payment" ><span className='material-symbols-outlined'>shopping_cart</span> FINALIZAR PEDIDO</Link> 
+        <Link to="/loja/cart/payment" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart FINALIZAR PEDIDO</span></Link> 
         }
       </div>
       </section>

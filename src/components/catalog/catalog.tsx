@@ -11,9 +11,9 @@ interface CatalogProps {
 export function Catalog({id, nome, imagem, valor} : CatalogProps){
     return(
     <>
-        <Link to={"/comprar" + "/" + id} ><img src={imagem}/></Link>
+        <Link to={"/comprar" + "/" + id} ><img src={imagem} alt={nome}/></Link>
         <h2>{nome}</h2>
-        <p>Valor: {valor}</p>
+        <span>Valor: {valor}</span>
     </>
     )
 }

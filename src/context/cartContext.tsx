@@ -4,13 +4,12 @@ import axios from 'axios';
 import { Pedido } from '../interface/PedidoDto';
 import { OrderProduct } from '../interface/OrderProduct';
 import { API_URL } from '../hooks/api';
+import { ProductData } from '../interface/ProductData';
 
 
 export const CartContext = createContext<any>('');
 
 export const CartProvider = ({ children } : any) => {
-  
-    
 
     var check : any = 0;
     if(localStorage.getItem("cartItems") != null){
@@ -30,42 +29,42 @@ export const CartProvider = ({ children } : any) => {
     }
   }
 
-  const addToCart = (item : any) => {
-    const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id_prod);
+  const addToCart = (item : ProductData) => {
+    const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id);
 
     if (isItemInCart) {
       setCartItems(
-        cartItems.map((cartItem : any) =>
-          cartItem.id_prod === item.id_prod
+        cartItems.map((cartItem : OrderProduct) =>
+          cartItem.id_prod === item.id
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         )
       );
     } else {
-      setCartItems([...cartItems, { ...item, quantity: 1 }]);
+      setCartItems([...cartItems, { ...item, id_prod: item.id, quantity: 1 }]);
     }
   };
 
-  const removeFromCart = (item : any) => {
-    const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id_prod);
+  const removeFromCart = (item : ProductData) => {
+    const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id);
 
     if (isItemInCart.quantity === 1) {
-      setCartItems(cartItems.filter((cartItem : any) => cartItem.id_prod !== item.id_prod));
+      setCartItems(cartItems.filter((cartItem : any) => cartItem.id_prod !== item.id));
     } else {
       setCartItems(
-        cartItems.map((cartItem : any) =>
-          cartItem.id_prod === item.id_prod
+        cartItems.map((cartItem : OrderProduct) =>
+          cartItem.id_prod === item.id
             ? { ...cartItem, quantity: cartItem.quantity - 1 }
             : cartItem
         )
       );
     }
   };
-  const deleteFromCart = (item : any) => {
-    const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id_prod);
+  const deleteFromCart = (item : ProductData) => {
+    const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id);
 
     if (isItemInCart.quantity > 0 ) {
-      setCartItems(cartItems.filter((cartItem : any) => cartItem.id_prod !== item.id_prod));
+      setCartItems(cartItems.filter((cartItem : any) => cartItem.id_prod !== item.id));
     } 
   };
   const clearCart = () => {

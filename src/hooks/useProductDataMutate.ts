@@ -11,7 +11,6 @@ import { API_URL } from "./api";
 
 
 export function useProductMutate(){
-
     const { user } = useContext(UserContext);
     
     const postData = async (data : ProductDataDto) : AxiosPromise<any> => {

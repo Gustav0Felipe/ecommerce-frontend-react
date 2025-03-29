@@ -46,6 +46,7 @@ Grandes telas - acima de 1200px (como televisões.
 	.produto{
 		display: flex;
 		flex-direction: column;
+		width: 30vw;
 	
 	}
 	.produto > a > img{

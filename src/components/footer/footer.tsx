@@ -1,8 +1,18 @@
+import { GithubLogo } from '@phosphor-icons/react'; 
+
 export function Footer(){
     return(
         <>
-        <footer className="rodape">
-          Site feito por Gustavo Felipe
+        <footer className="bg-[--cor--laranja--0] text-white py-4">
+          <div className="container mx-auto flex flex-col items-center text-center space-y-3">
+            <div className="flex items-center space-x-2 text-sm">
+              <a href="https://github.com/meGustaRacalu" target="_blank" rel="noopener noreferrer" className="hover:underline flex items-center">
+                <GithubLogo className='text-white' size={30} weight="bold"/>
+                <span className='ml-1 text-white'>GitHub | Site feito por Gustavo Felipe  </span>
+              </a>
+            </div>
+              <p>• © {new Date().getFullYear()} Ecommerce</p>
+          </div>
         </footer>
         </>
     )

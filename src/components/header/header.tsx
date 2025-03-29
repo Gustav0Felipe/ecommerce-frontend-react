@@ -12,11 +12,6 @@ class Header extends Component<any, any>{
 		return(
 			<header>
 			<Link to="/loja/"><img alt="Icone do Java" src={JavaIcon} id="logo"/></Link>
-			<div id="pesquisar">
-				<form action="/loja/pesquisar" method="get">
-					<input type="text" id="pesquisa" name="pesquisa" placeholder="Pesquisar"/>
-				</form>
-			</div>
 			<Menu></Menu>
 			</header>
 		);

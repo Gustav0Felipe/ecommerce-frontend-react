@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Compra from "./pages/Compra";
-import Cart from "./pages/Cart";
+import Home from "./pages/home/Home";
+import Compra from "./pages/compra/Compra";
+import Cart from "./pages/cart/Cart";
 import { Perfil } from "./pages/perfil/Perfil";
 import { Login } from "./pages/login/Login";
 import { Cadastro } from "./pages/cadastro/Cadastro";
@@ -13,10 +13,9 @@ import { CadastrarProduto } from "./pages/admin/CadastrarProduto";
 import { Pedidos } from "./pages/admin/Pedidos";
 import { DetalhesDoPedido } from "./pages/admin/PedidoDetalhes";
 import { CadastroVerificar } from "./pages/cadastro/CadastroVerificar";
-import { Payment } from "./pages/Payment";
+import { Payment } from "./pages/payment/Payment";
 
 function AppRoute( ){
-
    
     return ( 
         <>

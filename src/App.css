@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import "tailwindcss";
 
 :root{
 	--cor--laranja--0: rgb(255, 128, 0);
@@ -15,7 +16,7 @@
 * {
 	margin: 0px;
 	padding: 0px;
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	box-sizing: border-box;
 }
 
@@ -29,13 +30,9 @@ header{
 	width: 100vw;	
 	padding: 10px;
 }
-header > div > form{
+header > div > input{
 	display: inline-block;
 	width: 100%;
-	max-width: 900px;
-	transform: translateY(-12px);
-}
-header > div > form > input{
 	padding: 15px;
 	border: none;
 	border-radius: 5px;
@@ -50,11 +47,16 @@ header > div > form > input:focus{
 header > a > #logo{
 	display: inline-block;
 	width: 40px;
+	margin-right: 5px;
 }
 header > #pesquisar{
 	display: inline-block;
 	text-align: center;
-	width: calc(100% - 44px);
+	background-color: white;
+	border-radius: 5px;
+	color: black;
+	width: calc(100% - 49px);
+	margin-bottom: 5px;
 }
 nav{
 	text-align: center;
@@ -93,35 +95,54 @@ nav > ul > li:last-child > a{
     text-align: center;
     cursor: pointer; 
 }
-#cart{
-	font-size: 1.5em;
-}
 #section-principal > h1{
+	width: 100vw;
 	font-size: 1.2em;
 	text-align: center;
 }
 .produtos{
 	display: grid;
+	place-items: center;
 	grid-template-columns: 1fr 1fr;
+	width: 100vw;
 }
 .produto{
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 20px;
+	color: black;
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 5px;
+	width: 40vw;
+	height: 30vh;
+	padding: 5px;
+	margin-bottom: 5px;
 }
+
+
+.produto > a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 1px solid black;
+	border-radius: 5px;
+	align-content: center;
+	text-align: center;
+} 
+
 .produto > a > img{
 	display: inline-block;
 	width: 20vw;
+	max-height: 20vh;
 } 
-
 footer{
 	position: fixed;
 	bottom: 0;	
 	width: 100vw;
 	text-align: center;
-
+	
 	background-color: var(--cor--laranja--0);
 }
 
@@ -129,10 +150,10 @@ footer{
 
 /*Ao pressionar Botões*/
 button:active { 
-            box-shadow: box-shadow
-            7px 6px 28px 1px rgba(0, 0, 0, 0.24); 
-			transform: translateY(2px); 
-            transition: 0s;
+	box-shadow: box-shadow
+	7px 6px 28px 1px rgba(0, 0, 0, 0.24); 
+	transform: translateY(2px); 
+	transition: 0s;
 } 
 
 /*Avisos na tela*/
@@ -165,11 +186,11 @@ a#comprar{
 	margin: auto;
 	padding: 7px;
 	border-radius: 5px;
-
+	
 	color: white;
 	background-color: var(--cor--verde--0);
 	box-shadow: 1px 1px 1px rgb(106, 106, 106, 0.50);
-
+	
 	font-size: 2em;
 }
 
@@ -185,8 +206,8 @@ ol#descricao_bar{
 	margin: 10px auto;
 	align-content: center;
 	border: 1px solid rgb(195, 195, 195, 0.50);
-	background-color: rgb(233, 233, 233);
-
+	background-color: var(--cor--verde--1);
+	
 	text-align: left;
 	cursor: pointer;
 	list-style-type: none;
@@ -198,14 +219,21 @@ div#descricao{
 	display: block;
 	width: 90%;
 	max-width: 300px;
-	min-height: 200px;
+	min-height: 40px;
 	margin: auto;
 	border: 1px solid rgb(209, 209, 209, 0.30);
+	border-radius: 5px;
+	background-color: rgb(230, 210, 210);
+	color: black;
 }
 div#detalhes{
+	background-color: white;
+	text-align: center;
 	margin: auto;
 	width: 90%;
-	max-width: 900px;
+	max-width: 300px;
+	padding: 5px;
+	border-radius: 5px;
 }
 div#detalhes > img {
 	display: block;
@@ -244,14 +272,24 @@ div#cadastro > form >  #editar{
 
 
 /* Pagina Carrinho*/
+.cart{
+	font-size: 1.1em;
+	width: 100vw;
+}
 
 div#resumo {
 	margin: auto;
-	width: 90%;
+	width: 80%;
 	max-width: 900px;
  	box-shadow: 1px 1px 1px 1px rgb(181, 180, 182, 0.329);	
  	text-align: center;
+	font-size: 1.2em;
 }
+
+div#resumo > h1{
+	font-size: 2em;
+}
+
 p#total {
 	text-align: justify;
 	font-weight: bold;
@@ -260,7 +298,7 @@ p#total {
 div#carrinho {
 	margin: auto;
 	margin-top: 10px;
-	width: 90%;
+	width: 80%;
 	max-width: 900px;
 	padding: 10px;
 	box-shadow: 1px 1px 1px 1px rgb(181, 180, 182, 0.329);	
@@ -329,6 +367,7 @@ input#cep {
 	display: inline-block;
 	width: 90px;
 	height: 30px;
+	border: 1px solid black;
 	border-radius: 10px;
 	text-align: center;
 }
@@ -354,6 +393,7 @@ input#cep {
 	display: block;
 	margin: auto;
 	width: 90%;
+	border: 1px solid black;
 }
 .prompt > #confirmar{
 	display: block;
@@ -379,17 +419,18 @@ input#cep {
 	text-align: center;
 }
 #finalizar{
-	width: 90%;
+	width: 80%;
 	margin: auto;
-	margin-top: 10px;
+	margin-top: 20px;
 	padding: 7px;
 	border-radius: 5px;
+	max-width: 900px;
 
 	color: white;
 	background-color: var(--cor--verde--0);
 	box-shadow: 1px 1px 1px rgb(106, 106, 106, 0.50);
 
-	font-size: 1.5em;
+	font-size: 1.2em;
 }
 #finalizar:active {
 	background-color: var(--cor--verde--1);
@@ -528,6 +569,7 @@ tr.pedido > td, th {
 
 .pagamento {
 	text-align: center;
+	justify-items: center;
 }
 
 .pagamento > ol > li{
