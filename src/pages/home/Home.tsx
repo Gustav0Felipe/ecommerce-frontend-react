@@ -15,7 +15,6 @@ function Home(){
     function handlePesquisa(e : ChangeEvent<HTMLInputElement>){
         const { value } = e.target;
         setPesquisa(value);
-        console.log(pesquisa)
     }
 
     return(
