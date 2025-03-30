@@ -56,7 +56,6 @@ export function EditarSenha(){
             {!autorizar && <Navigate to="/loja/perfil"></Navigate>}
 		</div>
 	</section>
-    <Footer></Footer>
     </>
     )
 }

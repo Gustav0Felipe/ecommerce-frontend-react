@@ -27,7 +27,7 @@ export function Cadastro(){
     <>  
     <Header></Header>
     <section id="section-principal">
-		<div id="cadastro">
+		<div className="cadastro">
 			<span id="createUserIcon" className="material-symbols-outlined">person_add</span>
 			<h1>Criar Conta</h1>
 			<p>Informe seus dados abaixo para criar sua conta</p>
@@ -48,7 +48,6 @@ export function Cadastro(){
 			{invalid && <p className="mensagem"> Cliente já cadastrado.</p>}
 		</div>
 	</section>
-    <Footer></Footer>
     </>
 
     );

@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
+import JavaIcon from '../../assets/favicon.ico'
 
 class Menu extends Component<any, any>{
 	
@@ -40,6 +41,7 @@ class Menu extends Component<any, any>{
 		return(
         <>
             <span id="burguer" className="material-icons" onClick={this.handleClick}>menu</span>
+			<Link to="/loja/"><img alt="Icone do Java" src={JavaIcon} id="logo"/></Link>
 			<nav id="menu">
 				<ul>
 					<li><Link to={"/loja/"}> Ofertas do Dia </Link></li>

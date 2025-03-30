@@ -11,12 +11,12 @@ export function AdminMenu(){
     <section id="section-principal-admin">
 	<h1>Menu de gerenciamento</h1>
 		<ol id="adminOptions">
+            <li><Link to="/loja/admin/cadastrar-categoria"><button>Cadastrar Categoria</button></Link></li>
 			<li><Link to="/loja/admin/cadastrar-produto"><button>Cadastrar Produto</button></Link></li>
 			<li><Link to="/loja/admin/pedidos"><button>Listar Pedidos</button></Link></li>
 			<li><Link to="/loja/login"><button onClick={() => {window.sessionStorage.removeItem("isAdmin")} }><span className="material-symbols-outlined" id="exitIcon">logout</span></button></Link></li>
 		</ol>
     </section>
-    <Footer></Footer>
     </>
     )
 }

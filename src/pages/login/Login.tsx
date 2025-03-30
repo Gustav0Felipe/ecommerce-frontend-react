@@ -1,4 +1,3 @@
-import { Footer } from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -55,7 +54,6 @@ export function Login(){
                 {reactivation && <p>Essa conta esta desativada. Enviamos um Email para você reativar a sua conta.</p>}
             </div>
         </section>
-        <Footer></Footer>
         </>
     )
 }

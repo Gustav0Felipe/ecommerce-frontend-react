@@ -142,7 +142,6 @@ export default function Cart () {
         }
       </div>
       </section>
-      <Footer></Footer>
       </>
     )
 }

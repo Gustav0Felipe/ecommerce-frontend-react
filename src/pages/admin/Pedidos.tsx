@@ -104,8 +104,6 @@ export function Pedidos(){
         </div>
         
     </section>
-
-    <Footer></Footer>
     </>
     )
 }

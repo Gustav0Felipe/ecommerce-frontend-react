@@ -5,6 +5,7 @@ import { useProductData } from "../../hooks/useProductData";
 import { Link } from "react-router-dom";
 import Menu from "../../components/header/menu";
 import JavaIcon from '../../assets/favicon.ico'
+import Header from "../../components/header/header";
 
 
 function Home(){
@@ -19,17 +20,13 @@ function Home(){
 
     return(
     <>
-    <header>
-        <Link to="/loja/"><img alt="Icone do Java" src={JavaIcon} id="logo"/></Link>
+    <Header></Header>
+    <section id="section-principal">
+        <h1>Catalogo</h1>
+        
         <div id="pesquisar">
             <input type="text" id="pesquisa" name="pesquisa" placeholder="Pesquisar" value={pesquisa} onChange={handlePesquisa}/>
         </div>
-        <Menu></Menu>
-    </header>
-    <section id="section-principal">
-        
-        <h1>Catalogo</h1>
-        
         <ol className="produtos">  
         {
         
@@ -50,10 +47,8 @@ function Home(){
             })
         } 
 
-</ol>
-      </section>
-      <Footer></Footer>
-      
+        </ol>
+    </section>
     </>
     )
 }

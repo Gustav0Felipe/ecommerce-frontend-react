@@ -87,7 +87,6 @@ export function DetalhesDoPedido(){
 		</button>
     </div>
 	</section>
-    <Footer></Footer>
     </>
     )
 }
