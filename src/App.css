@@ -255,11 +255,24 @@ div#detalhes > form {
 }
 
 div.pagamento {
+	background-color: white;
 	margin: 50px auto;
 	width: 90%;
-	max-width: 900px;
+	max-width: 600px;
 	border: 1px solid black;
 	border-radius: 5px;
+	color: black;
+	padding: 5px;
+}
+
+div.pagamento > img {
+	width: 90%;
+	max-width: 350px;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+div.pagamento > ol > li > button {
+	color: white;
 }
 
 
@@ -335,9 +348,17 @@ ol#carrinho_list > li > p > button > span{
 	margin-left: -4px;
 }
 
-.miniatura_produto {
-	
-	width: 70px;
+.miniatura_produto{
+	background-color: white;
+	height: 130px;
+	width: 100px;
+	align-content: center;
+	justify-content: center;
+	margin-bottom: 5px;
+	margin-left: 7px;
+}
+.miniatura_produto > img {
+	width: 90px;
 }
 
 /*Limpar Carrinho*/
@@ -381,7 +402,7 @@ input#cep {
 }
 .prompt{
 	display: block;
-	width: 50vw;
+	width: 70vw;
 	
 }
 .prompt > p {
@@ -403,6 +424,7 @@ input#cep {
 	width: 90%;
 	border: 1px solid black;
 }
+
 .prompt > #confirmar{
 	display: block;
 	width: 90%;

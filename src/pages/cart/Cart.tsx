@@ -1,6 +1,5 @@
 import { useContext, useRef, useState } from 'react'
 import { CartContext } from '../../context/cartContext'
-import { Footer } from '../../components/footer/footer'
 import Header from '../../components/header/header'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../context/userContext'
@@ -25,7 +24,7 @@ export default function Cart () {
 
   const handleCalculoFrete = async (e: any) => {
     const cep : string = e.cep;
-    if(cep.trim.length == 0){
+    if(cep.trim().length == 0){
       return null; 
     }else{ 
       const response = await calculoFrete(e.cep);
@@ -65,7 +64,9 @@ export default function Cart () {
           {cartItems.map((item : any) => (
             <li key={item.id}>
               <p className="prod_name">{item.nome}</p>
-              <img className="miniatura_produto" src={item.imagem} alt={item.nome}/>
+              <div className="miniatura_produto" >
+                <img src={item.imagem} alt={item.nome}/>
+              </div>
               <p>
               <button
                   onClick={() => {
