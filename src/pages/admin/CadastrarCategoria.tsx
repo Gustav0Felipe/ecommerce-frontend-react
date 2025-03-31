@@ -1,8 +1,5 @@
 import { ChangeEvent, useContext, useState } from "react";
-import { Footer } from "../../components/footer/footer";
 import Header from "../../components/header/header";
-import { useProductMutate } from "../../hooks/useProductDataMutate";
-import { ProductDataDto } from "../../interface/ProductDataDto";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Categoria } from "../../interface/Categoria";
 import axios, { AxiosPromise } from "axios";
@@ -16,8 +13,6 @@ export function CadastrarCategoria(){
 
     const { user } = useContext(UserContext);
     const [categoria, setCategoria] = useState<Categoria>();
-    const { mutate } = useProductMutate();
-
    
     const submit = (event: { preventDefault: () => void; }) => {
         event.preventDefault()
@@ -48,7 +43,7 @@ export function CadastrarCategoria(){
     
     return (
     <>
-    {window.sessionStorage.getItem("isAdmin") != "true" && <Navigate to="/loja/login"></Navigate> }
+    {user?.role != "ADMIN" && <Navigate to="/loja/login" replace={true}></Navigate> }
     <Header></Header>
     <section id="section-principal">
         <div className="cadastro">

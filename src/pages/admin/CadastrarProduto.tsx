@@ -1,5 +1,4 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
-import { Footer } from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import { useProductMutate } from "../../hooks/useProductDataMutate";
 import { ProductDataDto } from "../../interface/ProductDataDto";
@@ -82,7 +81,7 @@ export function CadastrarProduto(){
 
     return (
     <>
-    {window.sessionStorage.getItem("isAdmin") != "true" && <Navigate to="/loja/login"></Navigate> }
+    {user?.role != "ADMIN" && <Navigate to="/loja/login" replace={true}></Navigate> }
     <Header></Header>
     <section id="section-principal">
         <div className="cadastro" id="cadastro-produto">

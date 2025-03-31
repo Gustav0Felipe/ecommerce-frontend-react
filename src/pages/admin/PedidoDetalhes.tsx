@@ -22,7 +22,7 @@ export function DetalhesDoPedido(){
 	}
     return(
     <>
-	{user.role != "ADMIN" && <Navigate to="/loja/login"></Navigate> }
+    {user?.role != "ADMIN" && <Navigate to="/loja/login" replace={true}></Navigate> }
     <Header></Header>
     <section id="section-principal">
 	<div>

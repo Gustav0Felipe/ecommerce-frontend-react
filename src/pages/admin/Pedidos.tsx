@@ -1,10 +1,9 @@
 import { Link, Navigate } from "react-router-dom";
-import { Footer } from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import { usePedidosData } from "../../hooks/usePedidoDataList";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Select from "react-select";
-
+import { UserContext } from "../../context/userContext";
 
 const months = [
     { value: "01", label: "Janeiro" },
@@ -20,16 +19,18 @@ const months = [
     { value: "11", label: "Novembro" },
     { value: "12", label: "Dezembro" }
   ];
+
 const years = [
     {value : "2022", label: "2022"},
     {value : "2023", label: "2023"},
     {value : "2024", label: "2024"}
 ];
+
 export function Pedidos(){
     const [selectedYear, setSelectedYear] = useState<any>();
     const [selectedMonth, setSelectedMonth] = useState<any>();
     const { data } =  usePedidosData();
-
+    const { user } = useContext(UserContext);
 
     const limparFiltro = () =>{
         setSelectedYear(null);
@@ -38,7 +39,7 @@ export function Pedidos(){
 
     return(
     <>
-    {window.sessionStorage.getItem("isAdmin") != "true" && <Navigate to="/loja/login"></Navigate> }
+    {user?.role != "ADMIN" && <Navigate to="/loja/login" replace={true}></Navigate> }
     <Header></Header>
 
     <section id="section-principal">

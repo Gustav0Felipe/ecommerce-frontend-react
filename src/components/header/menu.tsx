@@ -1,46 +1,39 @@
-import { Component } from 'react';
+import { Component, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import JavaIcon from '../../assets/favicon.ico'
+import { UserContext } from '../../context/userContext';
 
-class Menu extends Component<any, any>{
+function Menu (){
 	
-	constructor(props : any){
-		super(props);
-			this.state = {
-				open: false,
-			};
+	const [menu, setMenu] = useState(false);
+	const { user } = useContext(UserContext);
 
-		this.handleClick = this.handleClick.bind(this);
-		
-		}
-	handleResize = () => {
+	const handleResize = () => {
+
 		if(window.innerWidth >= 769){
-			this.setState({open: true})
+			setMenu(true);
 		}else{
-			this.setState({open: false})
+			setMenu(false);
 		}
-		
-	};
+	}
 
-	handleClick = () => {
+	const handleClick = () => {
 		if (this.state.open) {
-			this.setState({ open: false });
+			setMenu(false);
 		}else{
-            this.setState({open : true});
+            setMenu(true);
         }
 	};
 	
-	render() {
-		window.addEventListener("resize", this.handleResize);
-
-		if(!this.state.open && window.innerWidth < 769){
+		window.addEventListener("resize", handleResize);
+		if(!menu && window.innerWidth < 769){
 			return(
-                <><span id="burguer" className="material-icons" onClick={this.handleClick}>menu</span></>
+                <><span id="burguer" className="material-icons" onClick={handleClick}>menu</span></>
             )
 		}
 		return(
         <>
-            <span id="burguer" className="material-icons" onClick={this.handleClick}>menu</span>
+            <span id="burguer" className="material-icons" onClick={handleClick}>menu</span>
 			<Link to="/loja/"><img alt="Icone do Java" src={JavaIcon} id="logo"/></Link>
 			<nav id="menu">
 				<ul>
@@ -53,14 +46,13 @@ class Menu extends Component<any, any>{
 						</Link>
 					</li>
 					{
-					window.sessionStorage.getItem("isAdmin") == "true" && 
+					user.role == "ADMIN" && 
 					<li><Link to="/loja/admin">Admin</Link></li> 
 					}
 				</ul>
 			</nav>
         </>
         	);
-		}
-}
+	}
 
 export default Menu;
