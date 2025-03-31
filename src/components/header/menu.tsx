@@ -18,7 +18,7 @@ function Menu (){
 	}
 
 	const handleClick = () => {
-		if (this.state.open) {
+		if (menu) {
 			setMenu(false);
 		}else{
             setMenu(true);
