@@ -48,7 +48,6 @@ export function Perfil(){
 			<button className="editButtons" onClick= {disableAccount}>Desativar Conta</button>
 		</div>
 	    </section>
-    <Footer></Footer>
     </>
     )
 }

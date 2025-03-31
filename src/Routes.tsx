@@ -14,6 +14,7 @@ import { Pedidos } from "./pages/admin/Pedidos";
 import { DetalhesDoPedido } from "./pages/admin/PedidoDetalhes";
 import { CadastroVerificar } from "./pages/cadastro/CadastroVerificar";
 import { Payment } from "./pages/payment/Payment";
+import { CadastrarCategoria } from "./pages/admin/CadastrarCategoria";
 
 function AppRoute( ){
    
@@ -38,6 +39,7 @@ function AppRoute( ){
                 <Route path="/loja/perfil/editar-senha/:auth" Component={EditarSenha}></Route>
 
                 <Route path="/loja/admin" Component={AdminMenu}></Route>
+                <Route path="/loja/admin/cadastrar-categoria" element={<CadastrarCategoria></CadastrarCategoria>}></Route>
                 <Route path="/loja/admin/cadastrar-produto" element={<CadastrarProduto></CadastrarProduto>}></Route>
                 <Route path="/loja/admin/pedidos" Component={Pedidos}></Route>
                 <Route path="/loja/admin/pedidos/:pedidoId" Component={DetalhesDoPedido}></Route>

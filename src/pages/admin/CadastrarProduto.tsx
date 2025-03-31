@@ -1,117 +1,142 @@
-import { ChangeEvent, useState } from "react";
-import { Footer } from "../../components/footer/footer";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import Header from "../../components/header/header";
 import { useProductMutate } from "../../hooks/useProductDataMutate";
 import { ProductDataDto } from "../../interface/ProductDataDto";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Categoria } from "../../interface/Categoria";
-
-
-const Input = ({id, name, label, inputValue, maxlength, type, placeholder, updateValue} : any) => {
-    return(
-        <>
-        <label htmlFor={name}>{label}</label>
-        <input id={id} name={name} value={inputValue} type={type} maxLength={maxlength} required placeholder={placeholder} onChange={event => updateValue(event.target.value)}></input>
-        </>
-    )
-}
+import axios, { AxiosPromise } from "axios";
+import { API_URL } from "../../hooks/api";
+import { UserContext } from "../../context/userContext";
 
 export function CadastrarProduto(){
-
+    const { user, userLogout } = useContext(UserContext);
     const navigate = useNavigate();
 
-    const [nome, setNome] = useState("");
-    const [descricao, setDescricao] = useState("");
-    const [custo, setCusto] = useState(undefined);
-    const [valor, setValor] = useState(undefined);
-    const [estoque, setEstoque] = useState(undefined);
-    const [categoria, setCategoria] = useState<Categoria>({cod_cat: 1, descricao: "", nome_cat: ""});
-    const [imagem, setImagem] = useState("");
-    const [peso , setPeso] = useState(undefined);
-    const [comprimento , setComprimento] = useState(undefined);
-    const [altura , setAltura] = useState(undefined);
-    const [largura , setLargura] = useState(undefined);
-
+    const [produto, setProduto] = useState<ProductDataDto>();
+    const [categoria, setCategoria] = useState<Categoria>();
+    const [categorias, setCategorias] = useState<Categoria[]>();
+    
     const { mutate } = useProductMutate();
-
    
     const submit = (event: { preventDefault: () => void; }) => {
         event.preventDefault()
         
-        const productData : ProductDataDto = {
-            imagem: imagem,
-            nome: nome,
-            descricao: descricao,
-            custo: custo,
-            valor: valor,
-            estoque: estoque,
-            categoria: categoria,
-            peso_kg: peso,
-            comprimento_cm: comprimento, 
-            altura_cm: altura,
-            largura_cm: largura
-        }
-        mutate(productData);
+        mutate(produto);
 
         navigate("/");
     }
 
-
     function atualizarEstado(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = e.target;
- 
+        
+        setProduto({
+            ...produto,
+            [e.target.name]: e.target.value
+        });
+
         if (name === 'categoria') {
-            setCategoria({
-                ...categoria,
+            setProduto({
+                ...produto,
+                categoria:{
                     cod_cat: parseInt(value),
                     nome_cat: "",
-                    descricao: ""
+                    descricao: "",
+                }
+            })
 
+            setCategoria({
+                        cod_cat: parseInt(value),
+                        nome_cat: "",
+                        descricao: "",
                 },
             );
+        }else{
+            setProduto({
+                ...produto,
+                [e.target.name]: e.target.value
+            });
         }
-           
     }
+
+    async function buscarCategorias() : AxiosPromise<any>{
+        try {
+            const response = await axios.get(API_URL + "/categorias", 
+                {
+                    headers : {
+                        'Authorization' : user.token,
+                    }
+                }) 
+                setCategorias(response.data)
+                return response;
+        }catch (error: any) {
+            if (error.toString().includes('403')) {
+                userLogout()
+            }
+        }
+    }
+
+    useEffect(() => {
+        buscarCategorias()
+    }, [user])
 
     return (
     <>
-    {window.sessionStorage.getItem("isAdmin") != "true" && <Navigate to="/loja/login"></Navigate> }
+    {user?.role != "ADMIN" && <Navigate to="/loja/login" replace={true}></Navigate> }
     <Header></Header>
     <section id="section-principal">
-        <div id="cadastro">
-            <span id="createUserIcon" className="material-symbols-outlined">person_add</span>
+        <div className="cadastro" id="cadastro-produto">
             <h1>Novo produto: </h1>
             <form className="formDados" onSubmit={submit}>
-                        
-                <Input label="Nome: " id="nome" name="nome" inputValue={nome} updateValue={setNome} type="text" maxlength={255} placeholder="Nome"/>
-                
-                <Input label="Descrição: " id="descricao" name="descricao" inputValue={descricao} updateValue={setDescricao} maxlength={255} placeholder="descrição"/>
-                
-                <Input label="Custo: " id="custo" name="custo" inputValue={custo} updateValue={setCusto} type="number" maxlength={10} placeholder="Custo *" autoComplete={"on"}/>
-                
-                <Input label="Valor: " id="valor" name="valor" inputValue={valor} updateValue={setValor} type="number" maxlength={10} placeholder="Valor *"/>
-                
-                <Input label="Estoque Inicial: " id="estoque" name="estoque" inputValue={estoque} updateValue={setEstoque} type="number" maxlength={10} placeholder="Estoque *"/>
-                
-                <label htmlFor="categoria">Categoria: </label>
-                <input id={"categoria"} name={"categoria"} value={categoria.cod_cat || ''} type={"number"} required placeholder={"Categoria *"} onChange={atualizarEstado}></input>
-
-                <Input label="Imagem: " id="imagem" name="imagem" inputValue={imagem} updateValue={setImagem} type="text" maxlength={255} placeholder="Imagem *"/>
+                <label htmlFor={"nome"}>Nome: </label>
+                <input id={"nome"} name={"nome"} value={produto?.nome} type={"text"} maxLength={255} required placeholder={"Nome"} onChange={atualizarEstado} autoComplete={"on"}></input>
             
-                <Input label="Peso(kg): " id="peso_kg" name="peso_kg" inputValue={peso} updateValue={setPeso} type="text" maxlength={255} placeholder="Peso *"/>
+                <label htmlFor={"descricao"}>Descrição: </label>
+                <input id={"descricao"} name={"descricao"} value={produto?.descricao} type={"text"} maxLength={255} required placeholder={"Descrição"} onChange={atualizarEstado} autoComplete={"on"}></input>
+                
+                <label htmlFor={"custo"}>Custo: </label>
+                <input id={"custo"} name={"custo"} value={produto?.custo} type={"number"} maxLength={255} required placeholder={"Custo"} onChange={atualizarEstado} min={0} step="0.01" autoComplete={"on"}></input>
+                
+                <label htmlFor={"valor"}>Valor: </label>
+                <input id={"valor"} name={"valor"} value={produto?.valor} type={"number"} maxLength={255} required placeholder={"Valor"} onChange={atualizarEstado} min={0} step="0.01" autoComplete={"on"}></input>
+                
+                <label htmlFor={"estoque"}>Estoque: </label>
+                <input id={"estoque"} name={"estoque"} value={produto?.estoque} type={"number"} maxLength={10} required placeholder={"Estoque"} onChange={atualizarEstado} min={0} autoComplete={"on"}></input>
+                
+                <label className="block text-gray-700 font-semibold mb-2">Categoria:</label>
+                    <select
+                        name="categoria"
+                        value={categoria?.cod_cat?.toString() || ''}
+                        onChange={atualizarEstado}
+                        className="border rounded bg-white text-black w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        required
+                    >
+                        <option value="" disabled>Selecione uma Categoria</option>
+                        {categorias?.map((categoria) => (
+                            <option key={categoria.cod_cat} value={categoria.cod_cat.toString()}>
+                                {categoria.nome_cat}  |   {categoria.descricao}
+                            </option>
+                        ))}
+                </select>
+                
+                <label htmlFor={"imagem"}>Imagem: </label>
+                <input id={"imagem"} name={"imagem"} value={produto?.imagem} type={"text"} maxLength={255} required placeholder={"Imagem"} onChange={atualizarEstado} min={0} autoComplete={"on"}></input>
+                
+                <label htmlFor={"peso(kg)"}>Peso(kg): </label>
+                <input id={"peso_kg"} name={"peso_kg"} value={produto?.peso_kg} type={"number"} maxLength={10} required placeholder={"Peso(kg)"} onChange={atualizarEstado} min={0} step="0.10" autoComplete={"on"}></input>
+                
+                <label htmlFor={"Comprimento(Cm)"}>Comprimento(Cm): </label>
+                <input id={"comprimento_cm"} name={"comprimento_cm"} value={produto?.comprimento_cm} type={"number"} maxLength={10} required placeholder={"Comprimento(Cm"} onChange={atualizarEstado} min={0} autoComplete={"on"}></input>
+                
+                <label htmlFor={"Altura(Cm)"}>Altura(Cm): </label>
+                <input id={"altura_cm"} name={"altura_cm"} value={produto?.altura_cm} type={"number"} maxLength={10} required placeholder={"Altura(Cm)"} onChange={atualizarEstado} min={0} autoComplete={"on"}></input>
 
-                <Input label="Comprimento(cm): " id="comprimento_cm" name="comprimento_cm" inputValue={comprimento} updateValue={setComprimento} type="text" maxlength={255} placeholder="Comprimento *"/>
-
-                <Input label="Altura(cm): " id="altura_cm" name="altura_cm" inputValue={altura} updateValue={setAltura} type="text" maxlength={255} placeholder="Altura *"/>
-
-                <Input label="Largura(cm): " id="largura_cm" name="largura_cm" inputValue={largura} updateValue={setLargura} type="text" maxlength={255} placeholder="Largura *"/>
+                <label htmlFor={"Largura(Cm)"}>Largura(Cm): </label>
+                <input id={"largura_cm"} name={"largura_cm"} value={produto?.largura_cm} type={"number"} maxLength={10} required placeholder={"Largura(Cm)"} onChange={atualizarEstado} min={0} autoComplete={"on"}></input>
       
             <button id="cadastrar" type="submit">Enviar</button>
             </form>
         </div>
     </section>
-    <Footer></Footer>
     </>
     );
-    
 }

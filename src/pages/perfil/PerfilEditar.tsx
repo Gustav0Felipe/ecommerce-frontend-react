@@ -48,7 +48,6 @@ export function EditarPerfil(){
 			</form>
 		</div>
 	    </section>
-        <Footer></Footer>
         </>
     )
 }
