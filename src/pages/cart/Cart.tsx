@@ -45,7 +45,6 @@ export default function Cart () {
     if(selectedEnvio && selectedEnvio.target.value){
       window.sessionStorage.setItem("selectedEnvio", selectedEnvio.target.value.toString().split(" ")[0]);
       setValorFrete(selectedEnvio.target.value.toString().split(" ")[3])
-      
       handleMenuFreteOpen();
     }
   }
@@ -72,30 +71,30 @@ export default function Cart () {
               <div className="miniatura_produto" >
                 <img src={item.imagem} alt={item.nome}/>
               </div>
-              <p>
-              <button
-                  onClick={() => {
-                    addToCart(item)
-                  }}
-                >
-                <span>+</span>
-                </button>
-                {item.quantity}
-                <button 
-                  onClick={() => {
-                    removeFromCart(item)
-                  }}
-                >
-                <span>-</span>
-                </button>
-                <button type="button" onClick={() => {deleteFromCart(item)}}><span className="material-symbols-outlined">delete</span></button>
-              </p>
+              <div className="remove-add">
+                <button type='button'
+                    onClick={() => {
+                      addToCart(item)
+                    }}
+                  >
+                  <span>+</span>
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button type='button'
+                    onClick={() => {
+                      removeFromCart(item)
+                    }}
+                  >
+                  <span>-</span>
+                  </button>
+                  <button type="button" onClick={() => {deleteFromCart(item)}}><span id='remove' className="material-symbols-outlined">delete</span></button>
+                </div>
             </li>
           ))}  
           </ol>
           
 
-          <button className="button_medio" onClick={() => {clearCart()}}>
+          <button type='button' className="button_medio" onClick={() => {clearCart()}}>
             Clear cart
           </button>
           {cartItems.length > 0 &&
@@ -142,9 +141,9 @@ export default function Cart () {
         cartItems.length == 0 ||
 
         user.length == 0 && 
-        <Link to="/loja/login" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart FINALIZAR PEDIDO</span></Link>
+        <Link to="/loja/login" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart <span>FINALIZAR PEDIDO</span></span></Link>
         ||
-        <Link to="/loja/cart/payment" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart FINALIZAR PEDIDO</span></Link> 
+        <Link to="/loja/cart/payment" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart <span>FINALIZAR PEDIDO</span></span></Link> 
         }
       </div>
       </section>
