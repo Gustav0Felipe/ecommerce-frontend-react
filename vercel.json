@@ -3,7 +3,6 @@
       {
         "source": "/(.*)",
         "destination": "/",
-        "permanent": true,
         "statusCode": 200
         }
     ]
