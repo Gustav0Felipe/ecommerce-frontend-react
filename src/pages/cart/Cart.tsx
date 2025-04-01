@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { CartContext } from '../../context/cartContext'
 import Header from '../../components/header/header'
 import { Link } from 'react-router-dom'
@@ -9,7 +9,7 @@ import { Dialog } from '@mui/material'
 export default function Cart () {
   const ref = useRef<HTMLDivElement>(null);
 
-  const { cartItems, addToCart, removeFromCart, deleteFromCart, clearCart, getCartTotal, calculoFrete } = useContext(CartContext)
+  const { cartItems, addToCart, removeFromCart, deleteFromCart, removeDisabledItemFromCart, clearCart, getCartTotal, calculoFrete } = useContext(CartContext)
   const { user } = useContext(UserContext);
   const { register, handleSubmit } = useForm();
 
@@ -35,6 +35,9 @@ export default function Cart () {
     }
 
   }
+  useEffect(() => {
+    removeDisabledItemFromCart();
+  }, []);
 
   const setMetodoEntrega = async () =>  {
     if(selectedEnvio && selectedEnvio.target.value){

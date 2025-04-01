@@ -12,13 +12,7 @@ function Home(){
     const { user } = useContext(UserContext);
     const { mutate } = useDeleteProductMutate();
     const { mutateAsync } = useReactivateProductMutate();
-
-    const [isOn, setIsOn] = useState(false);
-
     
-    const handleToggle = () => {
-          setIsOn(!isOn);
-    };
     function handlePesquisa(e : ChangeEvent<HTMLInputElement>){
         const { value } = e.target;
         setPesquisa(value);

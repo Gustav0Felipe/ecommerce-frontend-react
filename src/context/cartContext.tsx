@@ -5,6 +5,8 @@ import { Pedido } from '../interface/PedidoDto';
 import { OrderProduct } from '../interface/OrderProduct';
 import { API_URL } from '../hooks/api';
 import { ProductData } from '../interface/ProductData';
+import { ProductDataDto } from '../interface/ProductDataDto';
+import { useProductData } from '../hooks/useProductData';
 
 
 export const CartContext = createContext<any>('');
@@ -20,6 +22,7 @@ export const CartProvider = ({ children } : any) => {
 
   const { user } = useContext(UserContext);
   const [cartItems, setCartItems] = useState<any>(localStorage.getItem('cartItems') ? JSON.parse(check) : []);
+  const { data } = useProductData(); 
 
   const cartIsEmpty = () : boolean => {
     if(cartItems.length <= 0){
@@ -30,18 +33,22 @@ export const CartProvider = ({ children } : any) => {
   }
 
   const addToCart = (item : ProductData) => {
-    const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id);
-
-    if (isItemInCart) {
-      setCartItems(
-        cartItems.map((cartItem : OrderProduct) =>
-          cartItem.id_prod === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...item, id_prod: item.id, quantity: 1 }]);
+    if(!item.enabled){
+      return null;
+    }else{
+      const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id);
+      
+      if (isItemInCart) {
+        setCartItems(
+          cartItems.map((cartItem : OrderProduct) =>
+            cartItem.id_prod === item.id
+              ? { ...cartItem, quantity: cartItem.quantity + 1 }
+              : cartItem
+            )
+        );
+      } else {
+        setCartItems([...cartItems, { ...item, id_prod: item.id, quantity: 1 }]);
+      }
     }
   };
 
@@ -67,6 +74,13 @@ export const CartProvider = ({ children } : any) => {
       setCartItems(cartItems.filter((cartItem : any) => cartItem.id_prod !== item.id));
     } 
   };
+
+  const removeDisabledItemFromCart = () => {
+    setCartItems(cartItems.filter((cartItem : any) => 
+        data?.find((product : ProductData) => product.id === cartItem.id_prod).enabled == true)
+        );
+    }
+
   const clearCart = () => {
     setCartItems([]);
   };
@@ -149,6 +163,7 @@ export const CartProvider = ({ children } : any) => {
         addToCart,
         removeFromCart,
         deleteFromCart,
+        removeDisabledItemFromCart,
         clearCart,
         getCartTotal,
         updateOrder,
