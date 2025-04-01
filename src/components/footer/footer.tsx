@@ -8,7 +8,7 @@ export function Footer(){
             <div className="flex items-center space-x-2 text-sm">
               <a href="https://github.com/Gustav0Felipe" target="_blank" rel="noopener noreferrer" className="hover:underline flex items-center">
                 <GithubLogo className='text-white' size={30} weight="bold"/>
-                <span className='ml-1 text-white'>GitHub | Site feito por Gustavo Felipe  </span>
+                <span className='ml-1 text-white'>GitHub | Site Sem Proposito Comercial feito por Gustavo Felipe  </span>
               </a>
             </div>
               <p>• © {new Date().getFullYear()} Ecommerce</p>
