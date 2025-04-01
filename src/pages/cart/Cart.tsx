@@ -5,10 +5,12 @@ import { Link } from 'react-router-dom'
 import { UserContext } from '../../context/userContext'
 import { useForm } from 'react-hook-form'
 import { Dialog } from '@mui/material'
+import { useProductData } from '../../hooks/useProductData'
 
 export default function Cart () {
   const ref = useRef<HTMLDivElement>(null);
 
+  const { data } = useProductData(); 
   const { cartItems, addToCart, removeFromCart, deleteFromCart, removeDisabledItemFromCart, clearCart, getCartTotal, calculoFrete } = useContext(CartContext)
   const { user } = useContext(UserContext);
   const { register, handleSubmit } = useForm();
@@ -36,8 +38,8 @@ export default function Cart () {
 
   }
   useEffect(() => {
-    removeDisabledItemFromCart();
-  }, []);
+    removeDisabledItemFromCart(data);
+  }, [data]);
 
   const setMetodoEntrega = async () =>  {
     if(selectedEnvio && selectedEnvio.target.value){

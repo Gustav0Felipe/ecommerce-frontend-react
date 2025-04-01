@@ -5,7 +5,6 @@ import { Pedido } from '../interface/PedidoDto';
 import { OrderProduct } from '../interface/OrderProduct';
 import { API_URL } from '../hooks/api';
 import { ProductData } from '../interface/ProductData';
-import { ProductDataDto } from '../interface/ProductDataDto';
 import { useProductData } from '../hooks/useProductData';
 
 
@@ -22,7 +21,6 @@ export const CartProvider = ({ children } : any) => {
 
   const { user } = useContext(UserContext);
   const [cartItems, setCartItems] = useState<any>(localStorage.getItem('cartItems') ? JSON.parse(check) : []);
-  const { data } = useProductData(); 
 
   const cartIsEmpty = () : boolean => {
     if(cartItems.length <= 0){
@@ -75,9 +73,9 @@ export const CartProvider = ({ children } : any) => {
     } 
   };
 
-  const removeDisabledItemFromCart = () => {
+  const removeDisabledItemFromCart = (productData: any) => {
     setCartItems(cartItems.filter((cartItem : any) => 
-        data?.find((product : ProductData) => product.id === cartItem.id_prod).enabled == true)
+        productData?.find((product : ProductData) => product.id === cartItem.id_prod).enabled == true)
         );
     }
 
