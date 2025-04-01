@@ -5,11 +5,6 @@ import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { API_URL } from "./api";
 
-
-
-
-
-
 export function useProductMutate(){
     const { user } = useContext(UserContext);
     
@@ -36,4 +31,59 @@ export function useProductMutate(){
     })
     
     return mutate;
+}
+
+export function useDeleteProductMutate(){
+    const { user } = useContext(UserContext);
+    
+    const deleteData = async (id : number) : AxiosPromise<any> => {
+        if(user.role == "ADMIN"){
+            const response = await axios.delete(API_URL + "/produtos/" + id, {
+                headers: {
+                    Authorization: user.token
+                }
+            });
+            return response;
+        }else{
+            return null;
+        }
+    }
+    const queryClient = useQueryClient();
+    const mutate = useMutation({
+        mutationFn: deleteData,
+        retry: 2,
+        onSettled: () => {
+            queryClient.invalidateQueries({queryKey: ['product-data']});
+        }
+    
+    })
+    
+    return mutate;
+}
+
+export function useReactivateProductMutate(){
+    const { user } = useContext(UserContext);
+    
+    const deleteData = async (id : number) : AxiosPromise<any> => {
+        if(user.role == "ADMIN"){
+            return await axios.put(API_URL + "/produtos/reativar/" + id, id,{
+                headers: {
+                    Authorization: user.token
+                }
+            });
+        }else{
+            return null;
+        }
+    }
+    const queryClient = useQueryClient();
+    const mutateUp = useMutation({
+        mutationFn: deleteData,
+        retry: 2,
+        onSettled: () => {
+            queryClient.invalidateQueries({queryKey: ['product-data']});
+        }
+    
+    })
+    
+    return mutateUp;
 }

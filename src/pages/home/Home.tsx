@@ -1,22 +1,37 @@
-import { ChangeEvent, ChangeEventHandler, FormEvent, Key, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { Catalog } from "../../components/catalog/catalog";
-import { Footer } from "../../components/footer/footer";
 import { useProductData } from "../../hooks/useProductData";
-import { Link } from "react-router-dom";
-import Menu from "../../components/header/menu";
-import JavaIcon from '../../assets/favicon.ico'
 import Header from "../../components/header/header";
-
+import { UserContext } from "../../context/userContext";
+import { useDeleteProductMutate, useReactivateProductMutate } from "../../hooks/useProductDataMutate";
+import "./home.css"
 
 function Home(){
     const { data } = useProductData(); 
     const [pesquisa, setPesquisa] = useState<string>();
+    const { user } = useContext(UserContext);
+    const { mutate } = useDeleteProductMutate();
+    const { mutateAsync } = useReactivateProductMutate();
 
+    const [isOn, setIsOn] = useState(false);
+
+    
+    const handleToggle = () => {
+          setIsOn(!isOn);
+    };
     function handlePesquisa(e : ChangeEvent<HTMLInputElement>){
         const { value } = e.target;
         setPesquisa(value);
     }
 
+    async function disableProduct(id: number){
+        mutate(id);
+    }
+
+    
+    async function activateProduct(id: number){
+        mutateAsync(id)
+    }
     return(
     <>
     <Header></Header>
@@ -31,9 +46,35 @@ function Home(){
         
 
         data?.map((productData: 
-            { id: Key | null | undefined; nome: string; imagem: string; valor: number; }) => {
+            { id: number | null | undefined; nome: string; imagem: string; valor: number; enabled: boolean}) => {
+                if(!productData.enabled && user.role != "ADMIN"){
+                    return null;
+                }
+                if(!productData.enabled && user.role == "ADMIN"){
+                    return <li className="produto" style={{opacity: "50%"}} key={productData.id }> 
+                            <div className={`toggle-switch ${productData.enabled ? 'on' : 'off'}`} 
+                            style={{marginLeft: "auto", cursor: "pointer", transition: "transform 0.3s"}}
+                            onClick={() => {activateProduct(productData.id)}}
+                            >
+                                <div className="toggle-knob"></div>
+                            </div>
+                            <Catalog
+                            id={productData.id}
+                            nome={productData.nome} 
+                            imagem={productData.imagem}  
+                            valor={productData.valor}/>
+                            </li>
+                }
                 if(pesquisa == null || pesquisa?.trim().length == 0 || productData.nome.toLowerCase().includes(pesquisa?.trim().toLowerCase())){
                     return <li className="produto" key={productData.id }> 
+                    {user.role == "ADMIN" &&
+                        <div className={`toggle-switch ${productData.enabled ? 'on' : 'off'}`} 
+                        style={{marginLeft: "auto", cursor: "pointer", transition: "transform 0.3s"}}
+                        onClick={() => {disableProduct(productData.id)}}
+                        >
+                            <div className="toggle-knob"></div>
+                        </div>
+                    }
                     <Catalog
                     id={productData.id}
                     nome={productData.nome} 

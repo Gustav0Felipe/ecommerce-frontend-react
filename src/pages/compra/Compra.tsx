@@ -5,8 +5,7 @@ import { ProductData } from "../../interface/ProductData";
 import { Link, useParams } from "react-router-dom";
 import { CartContext } from "../../context/cartContext";
 import axios, { AxiosPromise } from "axios";
-
-const API_URL = 'http://localhost:8080';
+import { API_URL } from "../../hooks/api";
 
 function Compra(){
     var { id } = useParams();
