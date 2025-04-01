@@ -54,9 +54,8 @@ export default function Cart () {
     <section className='cart'>    
     <div id="resumo">
       <h1><span className="material-symbols-outlined">shopping_cart</span> MEU CARRINHO</h1>
-      <h2>Resumo</h2>
       {
-          cartItems.length > 0 ? (
+        cartItems.length > 0 ? (
       <p>Total: {(Number.parseFloat(getCartTotal()) + Number.parseFloat(valorFrete.toString())).toFixed(2)}</p> ) : (
         <h3>Você não tem itens no Carrinho.</h3>
       )}
@@ -122,9 +121,9 @@ export default function Cart () {
             <select onChange={setSelectedEnvio}>
               <option value="" >Escolha uma Opção: </option>
             {
-                opcoesFrete.map((f: any) => (
-                  <option key={f.id} id={f.id}
-                  >
+              opcoesFrete.map((f: any) => (
+                <option key={f.id} id={f.id}
+                >
                     {f.id} {f.company} {f.name} {f.price}
                     </option>
                 ))
@@ -137,16 +136,18 @@ export default function Cart () {
       }
 
       <div id="finalizarDiv">
+        <h2 style={{color: "yellow", marginTop: "10px"}}>Ao finalizar o Pix será sempre gerado com valor de 1 Centavo pois é um Site Sem fins Lucrativos e Não vendemos Nada.</h2>
         {
-        cartItems.length == 0 ||
-
-        user.length == 0 && 
-        <Link to="/loja/login" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart <span>FINALIZAR PEDIDO</span></span></Link>
+          cartItems.length == 0 ||
+          
+          user.length == 0 && 
+          <Link to="/loja/login" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart <span>FINALIZAR PEDIDO</span></span></Link>
         ||
         <Link to="/loja/cart/payment" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart <span>FINALIZAR PEDIDO</span></span></Link> 
-        }
+      }
       </div>
       </section>
       </>
     )
-}
+  }
+  
