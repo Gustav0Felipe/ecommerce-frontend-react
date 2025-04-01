@@ -5,7 +5,6 @@ import { Pedido } from '../interface/PedidoDto';
 import { OrderProduct } from '../interface/OrderProduct';
 import { API_URL } from '../hooks/api';
 import { ProductData } from '../interface/ProductData';
-import { useProductData } from '../hooks/useProductData';
 
 
 export const CartContext = createContext<any>('');

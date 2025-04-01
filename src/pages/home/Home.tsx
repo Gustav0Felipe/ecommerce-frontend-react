@@ -1,13 +1,14 @@
 import { ChangeEvent, useContext, useState } from "react";
 import { Catalog } from "../../components/catalog/catalog";
-import { useProductData } from "../../hooks/useProductData";
+import { useProductListData } from "../../hooks/useProductData";
 import Header from "../../components/header/header";
 import { UserContext } from "../../context/userContext";
 import { useDeleteProductMutate, useReactivateProductMutate } from "../../hooks/useProductDataMutate";
 import "./home.css"
+import { Link } from "react-router-dom";
 
 function Home(){
-    const { data } = useProductData(); 
+    const { data } = useProductListData(); 
     const [pesquisa, setPesquisa] = useState<string>();
     const { user } = useContext(UserContext);
     const { mutate } = useDeleteProductMutate();
@@ -44,11 +45,20 @@ function Home(){
                 if(!productData.enabled && user.role != "ADMIN"){
                     return null;
                 }
-                if(!productData.enabled && user.role == "ADMIN"){
-                    return <li className="produto" style={{opacity: "50%"}} key={productData.id }> 
+                if(pesquisa == null || pesquisa?.trim().length == 0 || productData.nome.toLowerCase().includes(pesquisa?.trim().toLowerCase())){
+                    if(user.role == "ADMIN"){
+                        return <li className="produto" style={{opacity: `${productData.enabled ? '' : "50%"}`}} key={productData.id } > 
+                            
+                            <div className="edit-button"
+                            style={{marginRight: "auto", cursor: "pointer"}}>
+                            <Link to={"/loja/admin/editar-produto/" + productData.id} className="material-symbols-outlined">
+                            edit
+                            </Link>
+                            </div>
                             <div className={`toggle-switch ${productData.enabled ? 'on' : 'off'}`} 
                             style={{marginLeft: "auto", cursor: "pointer", transition: "transform 0.3s"}}
-                            onClick={() => {activateProduct(productData.id)}}
+                            onClick={
+                                () => {`${productData.enabled ? disableProduct(productData.id) : activateProduct(productData.id)}`}}
                             >
                                 <div className="toggle-knob"></div>
                             </div>
@@ -58,29 +68,20 @@ function Home(){
                             imagem={productData.imagem}  
                             valor={productData.valor}/>
                             </li>
-                }
-                if(pesquisa == null || pesquisa?.trim().length == 0 || productData.nome.toLowerCase().includes(pesquisa?.trim().toLowerCase())){
-                    return <li className="produto" key={productData.id }> 
-                    {user.role == "ADMIN" &&
-                        <div className={`toggle-switch ${productData.enabled ? 'on' : 'off'}`} 
-                        style={{marginLeft: "auto", cursor: "pointer", transition: "transform 0.3s"}}
-                        onClick={() => {disableProduct(productData.id)}}
-                        >
-                            <div className="toggle-knob"></div>
-                        </div>
+                    }else{
+                        return <li className="produto" key={productData.id }> 
+                        <Catalog
+                        id={productData.id}
+                        nome={productData.nome} 
+                        imagem={productData.imagem}  
+                        valor={productData.valor}/>
+                        </li>
                     }
-                    <Catalog
-                    id={productData.id}
-                    nome={productData.nome} 
-                    imagem={productData.imagem}  
-                    valor={productData.valor}/>
-                    </li>
                 }else{
                     return null;
                 }
             })
         } 
-
         </ol>
     </section>
     </>

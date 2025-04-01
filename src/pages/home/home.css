@@ -14,8 +14,8 @@
   }
   
   .toggle-knob {
-	width: 14px;
-	height: 14px;
+	width: 12px;
+	height: 12px;
 	background-color: white;
 	border-radius: 50%;
 	position: absolute;
@@ -26,4 +26,13 @@
   
   .toggle-switch.on .toggle-knob {
 	transform: translateX(15px);
+  }
+
+  .edit-button{
+	display: inline-block;
+	width: 5px;
+	height: 5px;
+	background-color: white;
+	border-radius: 50%;
+	margin: left;
   }
