@@ -1,0 +1,10 @@
+#menu{
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+#menu > ul > li > a > span{
+    font-size: 1.6em;
+    vertical-align: bottom;
+
+}
