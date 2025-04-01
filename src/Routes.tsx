@@ -15,6 +15,7 @@ import { DetalhesDoPedido } from "./pages/admin/PedidoDetalhes";
 import { CadastroVerificar } from "./pages/cadastro/CadastroVerificar";
 import { Payment } from "./pages/payment/Payment";
 import { CadastrarCategoria } from "./pages/admin/CadastrarCategoria";
+import { EditarProduto } from "./pages/admin/EditarProduto";
 
 function AppRoute( ){
    
@@ -25,7 +26,7 @@ function AppRoute( ){
                 <Route path="/" element={<Home></Home>}></Route>                
                 <Route path="/loja" element={<Home></Home>}></Route>
 
-                <Route path="/comprar/:id" Component={Compra}></Route> 
+                <Route path="/loja/comprar/:id" Component={Compra}></Route> 
 
                 <Route path="/loja/cart" Component={Cart}></Route>
                 <Route path="/loja/cart/payment" Component={Payment}></Route>
@@ -41,6 +42,7 @@ function AppRoute( ){
                 <Route path="/loja/admin" Component={AdminMenu}></Route>
                 <Route path="/loja/admin/cadastrar-categoria" element={<CadastrarCategoria></CadastrarCategoria>}></Route>
                 <Route path="/loja/admin/cadastrar-produto" element={<CadastrarProduto></CadastrarProduto>}></Route>
+                <Route path="/loja/admin/editar-produto/:id" Component={EditarProduto}></Route>
                 <Route path="/loja/admin/pedidos" Component={Pedidos}></Route>
                 <Route path="/loja/admin/pedidos/:pedidoId" Component={DetalhesDoPedido}></Route>
             </Routes>

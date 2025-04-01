@@ -55,6 +55,7 @@ nav{
 	padding-top: 0px;
 	padding-bottom: 0px;
 	margin: auto;
+	font-size: 1.3em;
 }
 nav > ul{
     list-style-type: none;
@@ -294,6 +295,8 @@ div.cadastro > form >  #editar{
 
 /* Pagina Carrinho*/
 .cart{
+	display: block;
+	margin-top: 30px;
 	font-size: 1.1em;
 	width: 100vw;
 }
@@ -337,15 +340,23 @@ ol#carrinho_list > div > li {
 	flex-direction: column;
 	align-content: space-around;
 }
-ol#carrinho_list > li > p > button {
+
+div#remove-add{
+	font-size: 1.2em;
+}
+
+ol#carrinho_list > li > div > button  {
+	text-align: center;
 	width: 20px;
 	height: 40px;
 	margin-right: 5px;
 	margin-left: 5px;
+	justify-items: center;
+	justify-content: center;
 }
-ol#carrinho_list > li > p > button > span{
-	font-size: 1.2em;
-	margin-left: -4px;
+ol#carrinho_list > li > div > button > span#remove{
+	display: inline-block;
+	vertical-align: sub;
 }
 
 .miniatura_produto{
@@ -381,7 +392,7 @@ form#calculo_frete > label{
 	padding: 3px;
 	max-width: 200px;
 	vertical-align: middle;
-
+	margin-left: 10px;
 }
 #button_frete > p{
 	display: inline;
@@ -390,7 +401,6 @@ form#calculo_frete > label{
 #frete_icon{
 	display: inline-block;
 	vertical-align: middle;
-
 }
 input#cep {
 	display: inline-block;
@@ -449,11 +459,12 @@ input#cep {
 	text-align: center;
 }
 #finalizar{
-	width: 80%;
+	width: 50%;
 	margin: auto;
 	margin-top: 20px;
 	padding: 7px;
 	border-radius: 5px;
+	min-width: 300px;
 	max-width: 900px;
 
 	color: white;
@@ -462,10 +473,11 @@ input#cep {
 
 	font-size: 1.2em;
 }
-#finalizar:active {
+#finalizar:hover {
 	background-color: var(--cor--verde--1);
 	transition: 0s;
 }
+
 
 
 
