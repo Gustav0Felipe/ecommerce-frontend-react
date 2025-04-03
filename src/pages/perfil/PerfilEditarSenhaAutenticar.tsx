@@ -59,7 +59,6 @@ export function AutenticarSenha(){
             {openMessage && <p>Enviamos um pedido de confirmação para seu Email!</p>}
 		</div>
 	</section>
-    <Footer></Footer>
     </>
     )
 }

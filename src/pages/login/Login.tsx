@@ -1,4 +1,3 @@
-import { Footer } from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -12,23 +11,18 @@ export function Login(){
     
     const { user, userLogin } = useContext(UserContext);
     const { register, handleSubmit } = useForm();
-    const [redirectAdminPage, setRedirectAdminPage] = useState(false);
     const [reactivation, handleReactivation] = useState(false);
 
     const loginValidate = async (formValues : any) => {  
             const response = await axios.post(API_URL + "/usuarios/logar", formValues) 
             console.log(response)
+
             if(response.data.length == 0){
                 alert("Email ou senha Inválidos.");
             } else{
-                if((response.data.role).toUpperCase() == "ADMIN"  ){
-                    window.sessionStorage.setItem("isAdmin", "true");
-                    setRedirectAdminPage (true);
-                }
                 if(response.data.enabled == false){
                     handleReactivation(true);
-                }
-                else{
+                }else{
                     userLogin(response.data);
                 }
             }
@@ -36,8 +30,9 @@ export function Login(){
 
     return (
         <>
-        {user.id_user &&  !redirectAdminPage && <Navigate to="/loja/perfil" replace={true}/> }
-        {redirectAdminPage && <Navigate to="/loja/admin" replace={true} />}
+        {user.id_user &&  user?.role == "USER" && <Navigate to="/loja/perfil" replace={true}/> }
+        {user.id_user && user?.role == "ADMIN" && <Navigate to="/loja/admin" replace={true}></Navigate> }
+        
         <Header></Header>
         <section id="section-principal">
             <div className="login">
@@ -55,7 +50,6 @@ export function Login(){
                 {reactivation && <p>Essa conta esta desativada. Enviamos um Email para você reativar a sua conta.</p>}
             </div>
         </section>
-        <Footer></Footer>
         </>
     )
 }

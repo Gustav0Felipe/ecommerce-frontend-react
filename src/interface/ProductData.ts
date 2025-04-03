@@ -6,5 +6,6 @@ export interface ProductData {
     custo: number,
     valor: number,
     estoque: number,
-    categoria: number
+    categoria: number,
+    enabled: boolean
 }

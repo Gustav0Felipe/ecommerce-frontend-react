@@ -1,16 +1,17 @@
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { CartContext } from '../../context/cartContext'
-import { Footer } from '../../components/footer/footer'
 import Header from '../../components/header/header'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../context/userContext'
 import { useForm } from 'react-hook-form'
 import { Dialog } from '@mui/material'
+import { useProductListData } from '../../hooks/useProductData'
 
 export default function Cart () {
   const ref = useRef<HTMLDivElement>(null);
 
-  const { cartItems, addToCart, removeFromCart, deleteFromCart, clearCart, getCartTotal, calculoFrete } = useContext(CartContext)
+  const { data } = useProductListData(); 
+  const { cartItems, addToCart, removeFromCart, deleteFromCart, removeDisabledItemFromCart, clearCart, getCartTotal, calculoFrete } = useContext(CartContext)
   const { user } = useContext(UserContext);
   const { register, handleSubmit } = useForm();
 
@@ -25,7 +26,7 @@ export default function Cart () {
 
   const handleCalculoFrete = async (e: any) => {
     const cep : string = e.cep;
-    if(cep.trim.length == 0){
+    if(cep.trim().length == 0){
       return null; 
     }else{ 
       const response = await calculoFrete(e.cep);
@@ -36,12 +37,14 @@ export default function Cart () {
     }
 
   }
+  useEffect(() => {
+    removeDisabledItemFromCart(data);
+  }, [data]);
 
   const setMetodoEntrega = async () =>  {
     if(selectedEnvio && selectedEnvio.target.value){
       window.sessionStorage.setItem("selectedEnvio", selectedEnvio.target.value.toString().split(" ")[0]);
       setValorFrete(selectedEnvio.target.value.toString().split(" ")[3])
-      
       handleMenuFreteOpen();
     }
   }
@@ -51,9 +54,8 @@ export default function Cart () {
     <section className='cart'>    
     <div id="resumo">
       <h1><span className="material-symbols-outlined">shopping_cart</span> MEU CARRINHO</h1>
-      <h2>Resumo</h2>
       {
-          cartItems.length > 0 ? (
+        cartItems.length > 0 ? (
       <p>Total: {(Number.parseFloat(getCartTotal()) + Number.parseFloat(valorFrete.toString())).toFixed(2)}</p> ) : (
         <h3>Você não tem itens no Carrinho.</h3>
       )}
@@ -65,31 +67,33 @@ export default function Cart () {
           {cartItems.map((item : any) => (
             <li key={item.id}>
               <p className="prod_name">{item.nome}</p>
-              <img className="miniatura_produto" src={item.imagem} alt={item.nome}/>
-              <p>
-              <button
-                  onClick={() => {
-                    addToCart(item)
-                  }}
-                >
-                <span>+</span>
-                </button>
-                {item.quantity}
-                <button 
-                  onClick={() => {
-                    removeFromCart(item)
-                  }}
-                >
-                <span>-</span>
-                </button>
-                <button type="button" onClick={() => {deleteFromCart(item)}}><span className="material-symbols-outlined">delete</span></button>
-              </p>
+              <div className="miniatura_produto" >
+                <img src={item.imagem} alt={item.nome}/>
+              </div>
+              <div className="remove-add">
+                <button type='button'
+                    onClick={() => {
+                      addToCart(item)
+                    }}
+                  >
+                  <span>+</span>
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button type='button'
+                    onClick={() => {
+                      removeFromCart(item)
+                    }}
+                  >
+                  <span>-</span>
+                  </button>
+                  <button type="button" onClick={() => {deleteFromCart(item)}}><span id='remove' className="material-symbols-outlined">delete</span></button>
+                </div>
             </li>
           ))}  
           </ol>
           
 
-          <button className="button_medio" onClick={() => {clearCart()}}>
+          <button type='button' className="button_medio" onClick={() => {clearCart()}}>
             Clear cart
           </button>
           {cartItems.length > 0 &&
@@ -117,9 +121,9 @@ export default function Cart () {
             <select onChange={setSelectedEnvio}>
               <option value="" >Escolha uma Opção: </option>
             {
-                opcoesFrete.map((f: any) => (
-                  <option key={f.id} id={f.id}
-                  >
+              opcoesFrete.map((f: any) => (
+                <option key={f.id} id={f.id}
+                >
                     {f.id} {f.company} {f.name} {f.price}
                     </option>
                 ))
@@ -132,17 +136,18 @@ export default function Cart () {
       }
 
       <div id="finalizarDiv">
+        <h2 style={{color: "yellow", marginTop: "10px"}}>Ao finalizar o Pix será sempre gerado com valor de 1 Centavo pois é um Site Sem fins Lucrativos e Não vendemos Nada.</h2>
         {
-        cartItems.length == 0 ||
-
-        user.length == 0 && 
-        <Link to="/loja/login" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart FINALIZAR PEDIDO</span></Link>
+          cartItems.length == 0 ||
+          
+          user.length == 0 && 
+          <Link to="/loja/login" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart <span>FINALIZAR PEDIDO</span></span></Link>
         ||
-        <Link to="/loja/cart/payment" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart FINALIZAR PEDIDO</span></Link> 
-        }
+        <Link to="/loja/cart/payment" ><span id='finalizar' className='material-symbols-outlined'>shopping_cart <span>FINALIZAR PEDIDO</span></span></Link> 
+      }
       </div>
       </section>
-      <Footer></Footer>
       </>
     )
-}
+  }
+  

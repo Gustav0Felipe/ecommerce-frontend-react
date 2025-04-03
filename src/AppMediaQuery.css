@@ -14,12 +14,17 @@ Grandes telas - acima de 1200px (como televisões.
 	width: 100vw;	
 	padding: 10px;
 	}
+	
+	#logo{
+		display: inline-block;
+		width: 40px;
+	}
     #burguer{
         display: none;
     }
     nav{
-		display: block;
-		width: 100%;	
+		display: inline-block;
+		width: 90vw;	
 	}
     nav > ul >  li{
         display: inline-block;
@@ -40,44 +45,46 @@ Grandes telas - acima de 1200px (como televisões.
 	}
 	.produtos{
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr ;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
 		padding: 20px;
 	}
 	.produto{
 		display: flex;
 		flex-direction: column;
-		width: 30vw;
-	
+		width: 20vw;
+		max-height: 300px;
+		margin-bottom: 30px;
 	}
 	.produto > a > img{
 		display: inline-block;
-		width: 15vw;
+		width: 10vw;
+		height: auto;
 	}
 	
 	div#detalhes{
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		margin: 30px auto 0px auto;
+		margin: 40px auto 0px auto;
 		width: 90%;
-		max-width: 900px;
+		max-width: 500px;
 	
 		border: 1px solid rgb(3, 3, 3, 0.50);
 		border-radius: 5px;
 	}
 	
 	div#detalhes > img {
-		width: 200px;
+		width: 70%;
 	}
 	
 	ol#descricao_bar{
 		width: 90%;
-		max-width: 900px;
+		max-width: 500px;
 	}
 	
 	div#descricao{
-	width: 90%;
-	max-width: 900px;
-	min-height: 200px;
+		width: 90%;
+		max-width: 500px;
+		height: auto;
 	}
 }

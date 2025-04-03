@@ -34,7 +34,7 @@ export function CadastroVerificar(){
     <>  
     <Header></Header>
     <section id="section-principal">
-		<div id="cadastro">
+		<div className="cadastro">
 			<span id="createUserIcon" className="material-symbols-outlined">person_add</span>
 			{ verificado &&
             <h1>Conta Verificada com Sucesso.</h1>
@@ -43,7 +43,6 @@ export function CadastroVerificar(){
             {handleErrorMessage && <h1>Conta já ativada ou Codigo errado.</h1>}
         </div>
 	</section>
-    <Footer></Footer>
     </>
 
     );

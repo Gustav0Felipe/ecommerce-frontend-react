@@ -30,18 +30,22 @@ export const CartProvider = ({ children } : any) => {
   }
 
   const addToCart = (item : ProductData) => {
-    const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id);
-
-    if (isItemInCart) {
-      setCartItems(
-        cartItems.map((cartItem : OrderProduct) =>
-          cartItem.id_prod === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...item, id_prod: item.id, quantity: 1 }]);
+    if(!item.enabled){
+      return null;
+    }else{
+      const isItemInCart = cartItems.find((cartItem : any) => cartItem.id_prod === item.id);
+      
+      if (isItemInCart) {
+        setCartItems(
+          cartItems.map((cartItem : OrderProduct) =>
+            cartItem.id_prod === item.id
+              ? { ...cartItem, quantity: cartItem.quantity + 1 }
+              : cartItem
+            )
+        );
+      } else {
+        setCartItems([...cartItems, { ...item, id_prod: item.id, quantity: 1 }]);
+      }
     }
   };
 
@@ -67,6 +71,13 @@ export const CartProvider = ({ children } : any) => {
       setCartItems(cartItems.filter((cartItem : any) => cartItem.id_prod !== item.id));
     } 
   };
+
+  const removeDisabledItemFromCart = (productData: any) => {
+    setCartItems(cartItems.filter((cartItem : any) => 
+        productData?.find((product : ProductData) => product.id === cartItem.id_prod).enabled == true)
+        );
+    }
+
   const clearCart = () => {
     setCartItems([]);
   };
@@ -149,6 +160,7 @@ export const CartProvider = ({ children } : any) => {
         addToCart,
         removeFromCart,
         deleteFromCart,
+        removeDisabledItemFromCart,
         clearCart,
         getCartTotal,
         updateOrder,

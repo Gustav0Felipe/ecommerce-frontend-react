@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { Footer } from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import { CartContext } from "../../context/cartContext";
 import { UserContext } from "../../context/userContext";
@@ -61,7 +60,6 @@ export function Payment(){
             </ol>
             </div>
         </section>
-        <Footer></Footer>
         </>
     );
 }

@@ -1,23 +1,37 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import Header from "../../components/header/header";
-import { useProductMutate } from "../../hooks/useProductDataMutate";
+import { useProductMutate, useUpdateProductMutate } from "../../hooks/useProductDataMutate";
 import { ProductDataDto } from "../../interface/ProductDataDto";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Categoria } from "../../interface/Categoria";
 import axios, { AxiosPromise } from "axios";
 import { API_URL } from "../../hooks/api";
 import { UserContext } from "../../context/userContext";
 
-export function CadastrarProduto(){
+export function EditarProduto(productData: ProductDataDto){
+
+    
     const { user, userLogout } = useContext(UserContext);
     const navigate = useNavigate();
-
+    
+    var { id } = useParams();
     const [produto, setProduto] = useState<ProductDataDto>();
     const [categoria, setCategoria] = useState<Categoria>();
     const [categorias, setCategorias] = useState<Categoria[]>();
     
-    const { mutate } = useProductMutate();
+    const { mutate } = useUpdateProductMutate();
+    
+    useEffect(() => {
+        const fetchData = async () : AxiosPromise<ProductDataDto> => {
+                    const response = await axios.get(API_URL + "/produtos/produto/" + id)
+                    setProduto(response.data);
+                    setCategoria(response.data.categoria)
+                    return response;
+                }
+        fetchData();
+      }, []);
    
+
     const submit = (event: { preventDefault: () => void; }) => {
         event.preventDefault()
         
@@ -85,7 +99,7 @@ export function CadastrarProduto(){
     <Header></Header>
     <section id="section-principal">
         <div className="cadastro" id="cadastro-produto">
-            <h1>Novo produto: </h1>
+            <h1>Editar produto: </h1>
             <form className="formDados" onSubmit={submit}>
                 <label htmlFor={"nome"}>Nome: </label>
                 <input id={"nome"} name={"nome"} value={produto?.nome} type={"text"} maxLength={255} required placeholder={"Nome"} onChange={atualizarEstado} autoComplete={"on"}></input>

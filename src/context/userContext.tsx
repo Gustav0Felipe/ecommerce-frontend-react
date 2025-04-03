@@ -25,6 +25,11 @@ export const UserProvider = ({ children } : any) => {
    
       useEffect(() => {
         localStorage.setItem("userPerfil", JSON.stringify(user));
+        var dataAtual = new Date().toLocaleString() + "";
+
+        if(dataAtual >= user.tokenExpireDate){
+          userLogout();
+        }
       }, [user]);
     
       useEffect(() => {
@@ -33,6 +38,9 @@ export const UserProvider = ({ children } : any) => {
           setUser(JSON.parse(user));
         }
       }, []);
+
+
+    
     
       return (
         <UserContext.Provider
